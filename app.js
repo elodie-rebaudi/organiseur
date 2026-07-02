@@ -1,25 +1,41 @@
-//alert("JS actif !");
-//console.log("js read");
-
 // variables declaration
 const taskInput = document.getElementById("taskInput");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
 
-//console.log("catched elements:", { taskInput, addTaskButton, taskList });
-
 // adding a task
 addTaskButton.addEventListener('click', function() {
-
-    //console.log("click detected");
-    addTask()
-    
+    addTask();
 });
 
 taskInput.addEventListener('keydown', function(event){
 
     if (event.key === 'Enter'){addTask()}
 });
+
+function displayTasks(taskText) {
+    const newLi = document.createElement('li');
+            
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    
+    const textSpan = document.createElement('span');
+    textSpan.textContent = taskText;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'delete';
+    deleteButton.className = 'deleteButton';
+    
+    newLi.appendChild(checkbox);
+    newLi.appendChild(textSpan);
+    newLi.appendChild(deleteButton);
+
+    deleteButton.addEventListener('click', function() {
+        deleteTask(newLi)
+    });
+
+    return newLi;
+};
 
 function addTask(){
     // get task input
@@ -28,9 +44,7 @@ function addTask(){
     // verify the input is not empty
     if (taskText !== "") {
 
-        // create new <li> tag
-        const newLi = document.createElement('li');
-        newLi.textContent = taskText;
+        const newLi = displayTasks(taskText);
 
         // add <li> in <ul>
         taskList.appendChild(newLi);
@@ -41,7 +55,7 @@ function addTask(){
         // empty input
         taskInput.value = "";
     }
-}
+};
 
 function saveTasks(){
     const tasks = [];
@@ -49,11 +63,15 @@ function saveTasks(){
     const liElements = taskList.querySelectorAll('li');
  
     liElements.forEach(function(li) {
-        tasks.push(li.textContent);
+        // we just want the text
+        const span = li.querySelector('span');
+        if (span) {
+            tasks.push(span.textContent);
+        }
     });
 
     localStorage.setItem('myTasks', JSON.stringify(tasks));
-}
+};
 
 function loadTasks() {
     // On récupère la chaîne de texte du LocalStorage
@@ -66,12 +84,18 @@ function loadTasks() {
         
         // Pour chaque tâche du tableau, on recrée un <li> à l'écran
         tasksArray.forEach(function(taskText) {
-            const newLi = document.createElement('li');
-            newLi.textContent = taskText;
+
+            const newLi = displayTasks(taskText);
+
             taskList.appendChild(newLi);
         });
     }
-}
+};
+
+function deleteTask(liElement) {
+    liElement.remove();
+    saveTasks();
+};
 
 // load the tasks
 loadTasks();
