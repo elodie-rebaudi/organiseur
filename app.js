@@ -14,11 +14,12 @@ taskInput.addEventListener('keydown', function(event){
     if (event.key === 'Enter'){addTask();}
 });
 
-function displayTasks(taskText) {
+function displayTasks(taskText, isChecked = false) {
     const newLi = document.createElement('li');
             
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
+    checkbox.checked = isChecked;
     
     const textSpan = document.createElement('span');
     textSpan.textContent = taskText;
@@ -58,7 +59,7 @@ function addTask(){
     // verify the input is not empty
     if (taskText !== "") {
 
-        const newLi = displayTasks(taskText);
+        const newLi = displayTasks(taskText,false);
 
         // add <li> in <ul>
         taskList.appendChild(newLi);
@@ -92,7 +93,7 @@ function saveAllTasks(){
     saveTasks(completedTasksList, 'myCompletedTasks');
 }
 
-function loadTasks(taskList, storageName) {
+function loadTasks(taskList, storageName, isCompleted = false) {
     // On récupère la chaîne de texte du LocalStorage
     const savedTasks = localStorage.getItem(storageName);
     
@@ -103,7 +104,7 @@ function loadTasks(taskList, storageName) {
         
         // Pour chaque tâche du tableau, on recrée un <li> à l'écran
         tasksArray.forEach(function(taskText) {
-            const newLi = displayTasks(taskText);
+            const newLi = displayTasks(taskText,isCompleted);
 
             taskList.appendChild(newLi);
         });
@@ -116,5 +117,5 @@ function deleteTask(liElement) {
 };
 
 // load the tasks
-loadTasks(taskList, 'myTasks');
-loadTasks(completedTasksList, 'myCompletedTasks')
+loadTasks(taskList, 'myTasks', false);
+loadTasks(completedTasksList, 'myCompletedTasks', true)
