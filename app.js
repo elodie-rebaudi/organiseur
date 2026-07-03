@@ -2,6 +2,7 @@
 const taskInput = document.getElementById("taskInput");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
+const completedTasksList = document.getElementById("completedTasksList");
 
 // adding a task
 addTaskButton.addEventListener('click', function() {
@@ -10,7 +11,7 @@ addTaskButton.addEventListener('click', function() {
 
 taskInput.addEventListener('keydown', function(event){
 
-    if (event.key === 'Enter'){addTask()}
+    if (event.key === 'Enter'){addTask();}
 });
 
 function displayTasks(taskText) {
@@ -21,6 +22,19 @@ function displayTasks(taskText) {
     
     const textSpan = document.createElement('span');
     textSpan.textContent = taskText;
+
+    checkbox.addEventListener('change', function(){
+        if (checkbox.checked){
+            // send to the end of completed tasks list
+            completedTasksList.appendChild(newLi);
+        }
+        else {
+            // send to the end of uncompleted tasks 
+            taskList.appendChild(newLi);
+        }
+
+        saveAllTasks();
+    });
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'delete';
@@ -50,14 +64,14 @@ function addTask(){
         taskList.appendChild(newLi);
 
         // save tasks in localStorage
-        saveTasks();
+        saveAllTasks();
 
         // empty input
         taskInput.value = "";
     }
 };
 
-function saveTasks(){
+function saveTasks(taskList, storageName){
     const tasks = [];
 
     const liElements = taskList.querySelectorAll('li');
@@ -70,12 +84,17 @@ function saveTasks(){
         }
     });
 
-    localStorage.setItem('myTasks', JSON.stringify(tasks));
+    localStorage.setItem(storageName, JSON.stringify(tasks));
 };
 
-function loadTasks() {
+function saveAllTasks(){
+    saveTasks(taskList, 'myTasks');
+    saveTasks(completedTasksList, 'myCompletedTasks');
+}
+
+function loadTasks(taskList, storageName) {
     // On récupère la chaîne de texte du LocalStorage
-    const savedTasks = localStorage.getItem('myTasks');
+    const savedTasks = localStorage.getItem(storageName);
     
     // Si on a trouvé des tâches sauvegardées
     if (savedTasks) {
@@ -84,7 +103,6 @@ function loadTasks() {
         
         // Pour chaque tâche du tableau, on recrée un <li> à l'écran
         tasksArray.forEach(function(taskText) {
-
             const newLi = displayTasks(taskText);
 
             taskList.appendChild(newLi);
@@ -94,8 +112,9 @@ function loadTasks() {
 
 function deleteTask(liElement) {
     liElement.remove();
-    saveTasks();
+    saveAllTasks();
 };
 
 // load the tasks
-loadTasks();
+loadTasks(taskList, 'myTasks');
+loadTasks(completedTasksList, 'myCompletedTasks')
