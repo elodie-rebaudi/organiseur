@@ -16,6 +16,8 @@ taskInput.addEventListener('keydown', function(event){
 
 function displayTasks(taskText, isChecked = false) {
     const newLi = document.createElement('li');
+
+    newLi.setAttribute('draggable', true)
             
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -23,6 +25,32 @@ function displayTasks(taskText, isChecked = false) {
     
     const textSpan = document.createElement('span');
     textSpan.textContent = taskText;
+
+    textSpan.addEventListener('dblclick', function(){
+        const currentText = textSpan.textContent;
+        const editInput = document.createElement('input');
+        editInput.type = 'text';
+        editInput.value = currentText;
+        editInput.className = 'edit-input';
+
+        newLi.replaceChild(editInput, textSpan);
+        editInput.focus();
+
+        function saveEdit() {
+            if (editInput.value.trim() !== "") {
+                textSpan.textContent = editInput.value;
+            }
+            if (newLi.contains(editInput)) {
+                newLi.replaceChild(textSpan, editInput);
+            }
+            saveAllTasks();
+        }
+
+        editInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') saveEdit();
+        });
+        editInput.addEventListener('blur', saveEdit);
+    });
 
     checkbox.addEventListener('change', function(){
         if (checkbox.checked){
