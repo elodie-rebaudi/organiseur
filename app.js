@@ -38,7 +38,7 @@ function displayTasks(taskText, isChecked = false) {
     });
 
     const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'delete';
+    deleteButton.textContent = 'X';
     deleteButton.className = 'deleteButton';
     
     newLi.appendChild(checkbox);
