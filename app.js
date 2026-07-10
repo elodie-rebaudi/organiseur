@@ -3,6 +3,33 @@ const taskInput = document.getElementById("taskInput");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
 const completedTasksList = document.getElementById("completedTasksList");
+const exportButton = document.getElementById('exportButton');
+
+// exporting tasks
+
+exportButton.addEventListener('click', function(){
+
+    const getTaskData = (list) =>{
+        const tasks =[];
+        list.querySelectorAll('li span').forEach(span => tasks.push(span.textContent));
+        return tasks;
+    }
+
+    const backupData = {
+        myTasks: getTaskData(taskList),
+        myCompletedTasks: getTaskData(completedTasksList)
+    };
+
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
+
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "todo-list-backup.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+});
+
 
 // adding a task
 addTaskButton.addEventListener('click', function() {
@@ -122,15 +149,11 @@ function saveAllTasks(){
 }
 
 function loadTasks(taskList, storageName, isCompleted = false) {
-    // On récupère la chaîne de texte du LocalStorage
     const savedTasks = localStorage.getItem(storageName);
     
-    // Si on a trouvé des tâches sauvegardées
     if (savedTasks) {
-        // On reconvertit le texte en vrai tableau JavaScript
         const tasksArray = JSON.parse(savedTasks);
         
-        // Pour chaque tâche du tableau, on recrée un <li> à l'écran
         tasksArray.forEach(function(taskText) {
             const newLi = displayTasks(taskText,isCompleted);
 
