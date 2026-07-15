@@ -4,6 +4,7 @@ const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
 const completedTasksList = document.getElementById("completedTasksList");
 const exportButton = document.getElementById('exportButton');
+const importInput = document.getElementById('importInput');
 
 // exporting tasks
 
@@ -28,6 +29,43 @@ exportButton.addEventListener('click', function(){
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
+});
+
+// importing tasks
+
+importInput.addEventListener('change', function(){
+    const file = event.target.files[0];
+    
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+        try {
+            const importedData = JSON.parse(e.target.result);
+            taskList.innerHTML = "";
+            completedTasksList.innerHTML = "";
+
+            if (importedData.myTasks){
+                importedData.myTasks.forEach(taskText => {
+                    taskList.appendChild(displayTasks(taskText,false));
+                });
+            }
+
+            if (importedData.myCompletedTasks) {
+                importedData.myCompletedTasks.forEach(taskText => {
+                    completedTasksList.appendChild(displayTasks(taskText, true));
+                });
+            }
+
+            saveAllTasks();
+            alert("Tasks successfully imported!");
+            
+        } catch (error){
+            alert("Error reading file. Make sure it's a valid JSON backup.");
+        }
+    }
+    reader.readAsText(file);
 });
 
 
