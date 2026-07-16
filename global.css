@@ -1,0 +1,24 @@
+
+.card-icon {
+  width: 40px;          
+  height: auto;         
+  display: block;
+  transition: transform 0.2s ease; 
+}
+
+
+.home-btn:hover .card-icon {
+  transform: scale(1.1); 
+}
+
+.cookbook-btn:hover .card-icon {
+  transform: scale(1.1); 
+}
+
+.planner-btn:hover .card-icon {
+  transform: scale(1.1); 
+}
+
+.todo-btn:hover .card-icon {
+  transform: scale(1.1); 
+}
