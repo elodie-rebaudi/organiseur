@@ -1,3 +1,26 @@
+/* reset and variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: cursive;
+}
+
+body {
+    background-color: #384d39af;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #1a2616;
+}
+
+h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #20391f;
+}
 
 .card-icon {
   width: 40px;          
@@ -21,4 +44,31 @@
 
 .todo-btn:hover .card-icon {
   transform: scale(1.1); 
+}
+
+/* Style du conteneur du menu */
+.global-nav-menu {
+  position: fixed;       /* Reste fixé à l'écran même quand on défile */
+  top: 15px;             /* Distance par rapport au haut de l'écran */
+  left: 15px;            /* Distance par rapport à la gauche de l'écran */
+  display: flex;   
+  flex-direction: column;      /* Aligne les boutons horizontalement (ou verticalement) */
+  gap: 12px;             /* Espace entre chaque icône */
+  z-index: 1000;         /* S'assure que le menu reste au-dessus de tout le reste */
+  background: rgba(255, 255, 255, 0.8); /* Un fond légèrement transparent (optionnel) */
+  padding: 8px;          /* Espace interne autour des icônes */
+  border-radius: 8px;    /* Arrondit les angles du fond */
+}
+
+/* Style individuel des icônes de navigation */
+.global-nav-menu .card-icon {
+  width: 35px;           /* Taille adaptée pour le coin */
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+/* Effet de survol sur les icônes du menu */
+.global-nav-menu a:hover .card-icon {
+  transform: scale(1.15);
 }

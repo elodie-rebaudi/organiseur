@@ -44,12 +44,17 @@ document.addEventListener("DOMContentLoaded", () =>{
     const cookbookIcon = document.createElement("img");
     cookbookIcon.src = "icons/cookbook.png";
     cookbookIcon.alt = "cookbook icon";
-    cookbookIcon.className = "card-icon";
+    cookbookIcon.className = "card-icon";   
 
     cookbookButton.appendChild(cookbookIcon);
 
-    document.body.appendChild(homeButton);
-    document.body.appendChild(plannerButton);
-    document.body.appendChild(todoButton);
-    document.body.appendChild(cookbookButton);
+    const navMenu = document.createElement("div");
+    navMenu.className = "global-nav-menu";
+
+    navMenu.appendChild(homeButton);
+    navMenu.appendChild(plannerButton);
+    navMenu.appendChild(todoButton);
+    navMenu.appendChild(cookbookButton);
+
+    document.body.prepend(navMenu);
 });
