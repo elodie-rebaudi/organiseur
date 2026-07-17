@@ -5,12 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="cookbook.css">
     <link rel="stylesheet" href="global.css">
-    <title>Document</title>
+    <title>cookbook</title>
 </head>
 <body>
     <div class="container">
         <h1>cookbook</h1>
-        <div class="menu">
+        <div class="form-container">
+            <form id="new-aliment">
+                <input type="text" placeholder="add an aliment" required>
+            </form>
+            <select name="category" id="food-category">
+                <option value="">--choose a category for aliment--</option>
+                <option value="carbs">carbs</option>
+                <option value="protein">protein</option>
+                <option value="vegetable">vegetable</option>
+                <option value="sauce">sauce</option>
+                <option value="fruit">fruit</option>
+            </select>
+            <button type="submit">add</button>
         </div>
     </div>
 
